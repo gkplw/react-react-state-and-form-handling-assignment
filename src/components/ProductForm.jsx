@@ -20,8 +20,7 @@ function ProductForm() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    const errorCount = validateForm();
-    if (errorCount > 0) {
+    if (validateForm()) {
       return;
     }
 
@@ -33,16 +32,17 @@ function ProductForm() {
       email: email,
     };
 
-    alert(JSON.stringify(newData));
+    alert(JSON.stringify(newData,null,2));
   }
 
-  function validateEmail(email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  }
+  // function validateEmail(email) {
+  //   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  //   return emailRegex.test(email);
+  // }
 
   function validateForm() {
     let newError = {};
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!name) {
       newError.name = "Name is required.";
@@ -61,12 +61,18 @@ function ProductForm() {
     if (!description) {
       newError.description = "Description is required.";
     }
-
+    
     if (!email) {
       newError.email = "Email is required.";
-    } else if (!validateEmail(email)) {
+    } else if (!emailRegex.test(email)) {
       newError.email = "Invalid email format.";
     }
+
+    // if (!email) {
+    //   newError.email = "Email is required.";
+    // } else if (!validateEmail(email)) {
+    //   newError.email = "Invalid email format.";
+    // }
 
     setError(newError);
     return Object.keys(newError).length;
